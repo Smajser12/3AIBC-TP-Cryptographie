@@ -6,6 +6,8 @@ import {sha3_256, sha3_512} from 'js-sha3';
 import {keccak512} from 'js-sha3' ;
 import ripemd160 from 'ripemd160-js'
 var md5 = require('md5');
+var aesjs = require('aes-js');
+//const NodeRSA = require('node-rsa');
 
 
 function App() {
@@ -24,6 +26,18 @@ function App() {
 
   const [inputRip,setInputRip] = useState("");
   const [encodedinRip,setencodedinRip] = useState("");
+
+  const [inputAES,setInputAES] = useState("");
+  const [encodedinAES,setencodedinAES] = useState("");
+
+  const [inputKeyAES,setInputKeyAES] = useState("");
+  const [Key,setKey] = useState("");
+
+  const [inputRSA,setInputRSA] = useState("");
+  const [encodedinRSA,setencodedinRSA] = useState("");
+
+  const [inputBLOWFISH,setInputBLOWFISH] = useState("");
+  const [encodedinBLOWFISH,setencodedinBLOWFISH] = useState("");
 
   // const [input,setInput] = useState("");
   // const [encodedinMD5,setencodedinMD5] = useState("");
@@ -45,51 +59,81 @@ function App() {
     let res = await ripemd160(inputRip);
     setencodedinRip(res);
   }
+  const toEncodeinAES = () => {
+    var input = inputKeyAES.split(',')
+    var key;
+    var textBytes = aesjs.utils.utf8.toBytes(inputAES);
+    console.log(input.length)
 
-  const toDecodeinMD5 = () => {
-    setencodedinMD5(md5(input))
+
+    if(input.length == 16);
+        key  = new Uint8Array(input);
+    if(input.length == 16);
+       key =  new Uint8Array(input);
+    if(input.length == 16);
+       key = new Uint8Array(input);
+    
+
+    var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+    var encryptedBytes = aesCtr.encrypt(textBytes);
+
+    var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+
+    setencodedinAES(encryptedHex);
   }
-  const toDecodein256 = () => {
-    setencodedin256(sha3_256(input))
+
+  const toDecodeinAES = () => {
+
   }
-  const toDecodeinSHA512 = () => {
-    setencodedinSHA512(sha3_512(input))
+
+  const toEncodeinRSA = () => {
+    setencodedinRSA((inputRSA))
   }
-  const toDecodeinKeccak = () => {
-    setencodedinKeccak(keccak512(input))
+  const toEncodeinBLOWFISH = () => {
+    setencodedinBLOWFISH((inputBLOWFISH))
   }
-  const toDecodeinRip = () => {
-    setencodedinRip(ripemd160(input))
-  }
+
+ 
 
   return (
     <div>
       <input onChange={ (e) => setInput(e.target.value)} placeholder="Input What You want To Encode in MD5"/>      
       <button onClick={ () => toEncodeinMD5()}>Encode</button>
-      <button onClick={ () => toDecodeinMD5()}>Decode</button>
       
       <p> MD5 : {encodedinMD5} </p>
 
       <input onChange={ (e) => setInput256(e.target.value)} placeholder="Input What You want To Encode in SHA256"/>      
       <button onClick={ () => toEncodein256()}>Encode</button>
-      <button onClick={ () => toDecodein256()}>Decode</button>
       
       <p> SHA256 : {encodedin256} </p>
 
       <input onChange={ (e) => setInputSHA512(e.target.value)} placeholder="Input What You want To Encode in SHA512"/>      
       <button onClick={ () => toEncodeinSHA512()}>Encode</button>
-      <button onClick={ () => toDecodeinSHA512()}>Decode</button>
       <p> SHA512 : {encodedinSHA512} </p>
 
       <input onChange={ (e) => setInputKeccak(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>      
       <button onClick={ () => toEncodeinKeccak()}>Encode</button>
-      <button onClick={ () => toDecodeinKeccak()}>Decode</button>
       <p> KECCAK512 : {encodedinKeccak} </p>
 
       <input onChange={ (e) => setInputRip(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>      
       <button onClick={ () => toEncodeinRip()}>Encode</button>
-      <button onClick={ () => toDecodeinRip()}>Decode</button>
       <p> ripmd160 : {encodedinRip} </p>
+      
+      <input onChange={ (e) => setInputAES(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>
+      <input onChange={ (e) => setInputKeyAES(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>      
+      <button onClick={ () => toEncodeinAES()}>Encode</button>
+      <button onClick={ () => toDecodeinAES()}>Decode</button>
+      <p> Result AES: {encodedinAES} </p>
+
+      {/* <input onChange={ (e) => setInputRip(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>      
+      <button onClick={ () => toEncodeinRip()}>Encode</button>
+      <button onClick={ () => toDecodeinRip()}>Decode</button>
+      <p> Result RSA : {encodedinRSA} </p>
+
+      <input onChange={ (e) => setInputRip(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>      
+      <button onClick={ () => toEncodeinRip()}>Encode</button>
+      <button onClick={ () => toDecodeinRip()}>Decode</button>
+      <p> Result BLOWFISH : {encodedinRip} </p> */}
 
     </div>
       
