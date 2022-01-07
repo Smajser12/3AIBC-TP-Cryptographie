@@ -63,7 +63,6 @@ function App() {
     var input = inputKeyAES.split(',')
     var key;
     var textBytes = aesjs.utils.utf8.toBytes(inputAES);
-    console.log(input.length)
 
 
     if(input.length == 16);
@@ -83,6 +82,12 @@ function App() {
   }
 
   const toDecodeinAES = () => {
+    var input = inputKeyAES.split(',')
+    var key;
+    var textBytes = aesjs.utils.utf8.toBytes(inputAES);
+
+    var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+    var decryptedBytes = aesCtr.decrypt(encryptedBytes);
 
   }
 
