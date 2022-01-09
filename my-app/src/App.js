@@ -63,14 +63,14 @@ function App() {
     var input = inputKeyAES.split(',')
     var key;
     var textBytes = aesjs.utils.utf8.toBytes(inputAES);
-    console.log(input.length)
+    // console.log(input.length)
 
 
     if(input.length == 16);
         key  = new Uint8Array(input);
-    if(input.length == 16);
+    if(input.length == 24);
        key =  new Uint8Array(input);
-    if(input.length == 16);
+    if(input.length == 32);
        key = new Uint8Array(input);
     
 
@@ -83,6 +83,22 @@ function App() {
   }
 
   const toDecodeinAES = () => {
+    var input = inputKeyAES.split(',')
+    var encryptedBytes = aesjs.utils.hex.toBytes(inputAES);
+    var key;
+
+    if(input.length == 16);
+        key  = new Uint8Array(input);
+    if(input.length == 16);
+       key =  new Uint8Array(input);
+    if(input.length == 16);
+       key = new Uint8Array(input);
+
+    var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+    var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+    var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
+
+    setencodedinAES(decryptedText);
 
   }
 
@@ -119,8 +135,8 @@ function App() {
       <button onClick={ () => toEncodeinRip()}>Encode</button>
       <p> ripmd160 : {encodedinRip} </p>
       
-      <input onChange={ (e) => setInputAES(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>
-      <input onChange={ (e) => setInputKeyAES(e.target.value)} placeholder="Input What You want To Encode in Keccak512"/>      
+      <input onChange={ (e) => setInputAES(e.target.value)} placeholder="Input What You want To Encode in AES"/>
+      <input onChange={ (e) => setInputKeyAES(e.target.value)} placeholder="Input your KEY"/>      
       <button onClick={ () => toEncodeinAES()}>Encode</button>
       <button onClick={ () => toDecodeinAES()}>Decode</button>
       <p> Result AES: {encodedinAES} </p>
